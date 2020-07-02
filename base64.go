@@ -2,7 +2,7 @@
 * @Author: scottxiong
 * @Date:   2020-06-29 20:02:41
 * @Last Modified by:   scottxiong
-* @Last Modified time: 2020-06-29 21:01:49
+* @Last Modified time: 2020-07-02 21:52:53
 * ref: https://stackoverflow.com/questions/38648512/go-saving-base64-string-to-file?rq=1
  */
 
@@ -65,5 +65,10 @@ func SaveImageToDisk(fileNameBase, data string) (string, error) {
 
 	//write
 	ioutil.WriteFile(fileName, buff.Bytes(), 0644)
+
+	// fix path like: uplods/xxx.png
+	if fileName[0] != '/' {
+		fileName = "/" + fileName
+	}
 	return fileName, err
 }
