@@ -12,7 +12,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
@@ -31,7 +30,6 @@ var (
 )
 
 func SaveImageToDisk(fileNameBase, data string) (string, error) {
-	fmt.Println(fileNameBase)
 	index := strings.Index(data, ";base64,")
 	if index < 0 {
 		return "", ErrInvalidImage
@@ -70,13 +68,17 @@ func SaveImageToDisk(fileNameBase, data string) (string, error) {
 	ioutil.WriteFile(fileName, buff.Bytes(), 0644)
 
 	// fix path like: uplods/xxx.png
-	if fileName[0] != '/' {
+	if fileName[0] != '/' && fileName[0] != '\\' {
 		//Compatible with windows
 		if runtime.GOOS == "windows" {
-			fileName = "\\" + strings.ReplaceAll(fileName, "/", "\\")
+			fileName = "\\" + fileName
 		} else {
 			//macos
 			fileName = "/" + fileName
+		}
+	} else {
+		if runtime.GOOS == "windows" {
+			fileName = strings.ReplaceAll(fileName, "/", "\\")
 		}
 	}
 
