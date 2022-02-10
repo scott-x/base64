@@ -19,6 +19,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"runtime"
 	"strings"
 )
 
@@ -68,7 +69,14 @@ func SaveImageToDisk(fileNameBase, data string) (string, error) {
 
 	// fix path like: uplods/xxx.png
 	if fileName[0] != '/' {
-		fileName = "/" + fileName
+		//Compatible with windows
+		if runtime.GOOS == "windows" {
+			fileName = "\\" + strings.ReplaceAll(fileName, "/", "\\")
+		} else {
+			//macos
+			fileName = "/" + fileName
+		}
 	}
+
 	return fileName, err
 }
