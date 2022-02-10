@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
@@ -30,6 +31,7 @@ var (
 )
 
 func SaveImageToDisk(fileNameBase, data string) (string, error) {
+	fmt.Println(fileNameBase)
 	index := strings.Index(data, ";base64,")
 	if index < 0 {
 		return "", ErrInvalidImage
