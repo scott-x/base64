@@ -19,7 +19,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"runtime"
 	"strings"
 )
 
@@ -68,18 +67,8 @@ func SaveImageToDisk(fileNameBase, data string) (string, error) {
 	ioutil.WriteFile(fileName, buff.Bytes(), 0644)
 
 	// fix path like: uplods/xxx.png
-	if fileName[0] != '/' && fileName[0] != '\\' {
-		//Compatible with windows
-		if runtime.GOOS == "windows" {
-			fileName = "\\" + fileName
-		} else {
-			//macos
-			fileName = "/" + fileName
-		}
-	} else {
-		if runtime.GOOS == "windows" {
-			fileName = strings.ReplaceAll(fileName, "/", "\\")
-		}
+	if fileName[0] != '/' {
+		fileName = path.Join("/", fileName)
 	}
 
 	return fileName, err
